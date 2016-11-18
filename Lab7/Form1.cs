@@ -12,9 +12,16 @@ namespace Lab7
 {
     public partial class Form1 : Form
     {
+        private Bitmap openimage;
         public Form1()
         {
             InitializeComponent();
+            Size mysize = new Size(Get_File_Button.Width,Get_File_Button.Height);
+            Bitmap openimage = new Bitmap(@"..\..\OpenPH.bmp");
+            Bitmap newimage = new Bitmap(openimage, new Size(Get_File_Button.Width, Get_File_Button.Height));
+            Get_File_Button.Image = newimage;
         }
+
+
     }
 }

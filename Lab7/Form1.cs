@@ -43,6 +43,12 @@ namespace Lab7
                 }
 
             }
+            string key = KeyBox.Text;
+            if (key.Length == 0)
+            {
+                MessageBox.Show("Please Enter a Key.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             try
             {
                 fin = new FileStream(inName, FileMode.Open, FileAccess.Read);
@@ -59,12 +65,7 @@ namespace Lab7
             long rdlen = 0;              
             long totlen = fin.Length;   
             int len;
-            string key = KeyBox.Text;
-            if (key.Length == 0)
-            {
-                MessageBox.Show("Please Enter a Key.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+           
             byte[] mykey = new byte[8];
             DES des = new DESCryptoServiceProvider();
                 char[] tempkey = key.ToCharArray();

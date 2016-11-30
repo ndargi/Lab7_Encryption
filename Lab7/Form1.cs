@@ -27,16 +27,49 @@ namespace Lab7
         {
             string inName = FilenameBox.Text;
             string outName = inName + ".des";
-            FileStream fin = new FileStream(inName, FileMode.Open, FileAccess.Read);
-            FileStream fout = new FileStream(outName, FileMode.OpenOrCreate, FileAccess.Write);
+            
+            FileStream fin;
+            FileStream fout;
+            try
+            {
+                fin = new FileStream(inName, FileMode.Open, FileAccess.Read);
+                fout = new FileStream(outName, FileMode.OpenOrCreate, FileAccess.Write);
+            }
+            catch
+            {
+                MessageBox.Show("Could not open source or destination File.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (File.Exists(outName))
+            {
+                DialogResult dialog = MessageBox.Show("Output File Exists. Overwrite?", "File Exists", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialog == DialogResult.Yes)
+                {
+
+                }
+                else if (dialog == DialogResult.No)
+                {
+                    return;
+                }
+
+            }
             fout.SetLength(0);
             byte[] bin = new byte[100]; //This is intermediate storage for the encryption.
             long rdlen = 0;              //This is the total number of bytes written.
             long totlen = fin.Length;    //This is the total length of the input file.
             int len;
             string key = KeyBox.Text;
+            if (key.Length == 0)
+            {
+                MessageBox.Show("Please Enter a Key.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            // byte[] mykey = new byte[8] { 0X30, 0X30, 0X30, 0X30, 0X30, 0X30, 0X30, 0X30};
             byte[] mykey = new byte[8];
-            mykey = Encoding.ASCII.GetBytes("00000000");
+            for (int i = 0; i < 8; i++)
+            {
+                Console.WriteLine(Convert.ToChar(mykey[i]));
+            }
             DES des = new DESCryptoServiceProvider();
             if (key.Length > 8)
             {
@@ -45,25 +78,26 @@ namespace Lab7
                 mykey = Encoding.ASCII.GetBytes(firsteight);
                 for (int i = 0; i < key.Length - 8; i++)
                 {
-                    
-
                     mykey[i] = Convert.ToByte(mykey[i] + totalstring[i + 8]); 
                 }
             }
             else//This needs to be figured out for keys that are less than 8 characters
             {
-                byte[] tempkey = Encoding.ASCII.GetBytes(key);
-
+     
+               
+                char[] tempkey = key.ToCharArray();
+                byte b;
                 for (int i = 0; i < tempkey.Length; i++)
                 {
-                    mykey[i % (mykey.Length)] += (byte)tempkey[1];
+                    b = (byte)tempkey[i];
+                    mykey[i % (mykey.Length)] += (byte)b;
                 }
                 for (int i = 0; i < 8; i++)
                 {
                     Console.WriteLine(Convert.ToChar(mykey[i]));
                 }
             }
-           
+
             CryptoStream encStream = new CryptoStream(fout, des.CreateEncryptor(mykey, mykey), CryptoStreamMode.Write);
             while (rdlen < totlen)
             {
@@ -79,13 +113,27 @@ namespace Lab7
         private void Decrypt_Button_MouseClick(object sender, MouseEventArgs e)
         {
             string inName = FilenameBox.Text;
-            string checkstring = inName.Substring(inName.Length-5, 4);
-            if (checkstring != ".des")
+            string outName = inName.Remove(inName.Length - 4);
+            if (Path.GetExtension(inName) != ".des")
             {
+                Console.WriteLine(Path.GetExtension(inName));
                 MessageBox.Show("Not a .des File", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            string outName = inName.Remove(inName.Length - 4);
+            if (File.Exists(outName))
+            {
+                DialogResult dialog = MessageBox.Show("Output File Exists. Overwrite?", "File Exists", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialog == DialogResult.Yes)
+                {
+                    
+                }
+                else if (dialog == DialogResult.No)
+                {
+                    return;
+                }
+
+            }
+
             Console.WriteLine(outName);
             FileStream fin = new FileStream(inName, FileMode.Open, FileAccess.Read);
             FileStream fout = new FileStream(outName, FileMode.OpenOrCreate, FileAccess.Write);
@@ -95,8 +143,8 @@ namespace Lab7
             long totlen = fin.Length;    //This is the total length of the input file.
             int len;
             string key = KeyBox.Text;
+            //byte[] mykey = new byte[8] { 0X30, 0X30, 0X30, 0X30, 0X30, 0X30, 0X30, 0X30 };
             byte[] mykey = new byte[8];
-            mykey = Encoding.ASCII.GetBytes("00000000");
             DES des = new DESCryptoServiceProvider();
             if (key.Length > 8)
             {
@@ -112,14 +160,12 @@ namespace Lab7
             }
             else//This needs to be figured out for keys that are less than 8 characters
             {
-                byte[] tempkey = Encoding.ASCII.GetBytes(key);
+                char[] tempkey = key.ToCharArray();
+                byte b;
                 for (int i = 0; i < tempkey.Length; i++)
                 {
-                    mykey[i % (mykey.Length)] += (byte)tempkey[1];
-                }
-                for (int i = 0; i < 8; i++)
-                {
-                    Console.WriteLine(Convert.ToChar(mykey[i]));
+                    b = (byte)tempkey[i];
+                    mykey[i % (mykey.Length)] += (byte)b;
                 }
             }
 
@@ -138,10 +184,11 @@ namespace Lab7
             }
             catch
             {
-                File.Delete(outName);
+                
                 MessageBox.Show("Bad Key or File", "Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
                 fout.Dispose();
                 fin.Dispose();
+                File.Delete(outName);
             }
         }
 

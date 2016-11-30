@@ -1,1 +1,9 @@
 Y:\Boston University\Senior\Software Design\Lab7\Lab7\bin\Debug\Lab7.exe.config
+Y:\Boston University\Senior\Software Design\Lab7\Lab7\bin\Debug\Lab7.exe
+Y:\Boston University\Senior\Software Design\Lab7\Lab7\bin\Debug\Lab7.pdb
+Y:\Boston University\Senior\Software Design\Lab7\Lab7\obj\Debug\Lab7.csprojResolveAssemblyReference.cache
+Y:\Boston University\Senior\Software Design\Lab7\Lab7\obj\Debug\Lab7.Form1.resources
+Y:\Boston University\Senior\Software Design\Lab7\Lab7\obj\Debug\Lab7.Properties.Resources.resources
+Y:\Boston University\Senior\Software Design\Lab7\Lab7\obj\Debug\Lab7.csproj.GenerateResource.Cache
+Y:\Boston University\Senior\Software Design\Lab7\Lab7\obj\Debug\Lab7.exe
+Y:\Boston University\Senior\Software Design\Lab7\Lab7\obj\Debug\Lab7.pdb

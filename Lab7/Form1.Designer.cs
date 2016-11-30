@@ -29,12 +29,13 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.FilenameBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.KeyBox = new System.Windows.Forms.TextBox();
             this.Encrypt_Button = new System.Windows.Forms.Button();
             this.Decrypt_Button = new System.Windows.Forms.Button();
             this.Get_File_Button = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // label1
@@ -46,13 +47,13 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "File Name:";
             // 
-            // textBox1
+            // FilenameBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(97, 93);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(516, 49);
-            this.textBox1.TabIndex = 1;
+            this.FilenameBox.Location = new System.Drawing.Point(97, 93);
+            this.FilenameBox.Multiline = true;
+            this.FilenameBox.Name = "FilenameBox";
+            this.FilenameBox.Size = new System.Drawing.Size(516, 49);
+            this.FilenameBox.TabIndex = 1;
             // 
             // label2
             // 
@@ -63,13 +64,13 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Key:";
             // 
-            // textBox2
+            // KeyBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(97, 204);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(316, 43);
-            this.textBox2.TabIndex = 3;
+            this.KeyBox.Location = new System.Drawing.Point(97, 204);
+            this.KeyBox.Multiline = true;
+            this.KeyBox.Name = "KeyBox";
+            this.KeyBox.Size = new System.Drawing.Size(316, 43);
+            this.KeyBox.TabIndex = 3;
             // 
             // Encrypt_Button
             // 
@@ -79,6 +80,7 @@
             this.Encrypt_Button.TabIndex = 4;
             this.Encrypt_Button.Text = "Encrypt";
             this.Encrypt_Button.UseVisualStyleBackColor = true;
+            this.Encrypt_Button.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Encrypt_Button_MouseClick);
             // 
             // Decrypt_Button
             // 
@@ -88,14 +90,20 @@
             this.Decrypt_Button.TabIndex = 5;
             this.Decrypt_Button.Text = "Decrypt";
             this.Decrypt_Button.UseVisualStyleBackColor = true;
+            this.Decrypt_Button.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Decrypt_Button_MouseClick);
             // 
             // Get_File_Button
             // 
-            this.Get_File_Button.Location = new System.Drawing.Point(643, 93);
+            this.Get_File_Button.Location = new System.Drawing.Point(640, 85);
             this.Get_File_Button.Name = "Get_File_Button";
-            this.Get_File_Button.Size = new System.Drawing.Size(61, 59);
+            this.Get_File_Button.Size = new System.Drawing.Size(68, 64);
             this.Get_File_Button.TabIndex = 6;
             this.Get_File_Button.UseVisualStyleBackColor = true;
+            this.Get_File_Button.Click += new System.EventHandler(this.Get_File_Button_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // Form1
             // 
@@ -105,9 +113,9 @@
             this.Controls.Add(this.Get_File_Button);
             this.Controls.Add(this.Decrypt_Button);
             this.Controls.Add(this.Encrypt_Button);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.KeyBox);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.FilenameBox);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "File Encrypt/Decrypt - Nicholas Dargi";
@@ -119,12 +127,13 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox FilenameBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox KeyBox;
         private System.Windows.Forms.Button Encrypt_Button;
         private System.Windows.Forms.Button Decrypt_Button;
         private System.Windows.Forms.Button Get_File_Button;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

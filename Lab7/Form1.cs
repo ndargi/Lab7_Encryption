@@ -23,23 +23,13 @@ namespace Lab7
             Get_File_Button.Image = newimage;
         }
 
-        private void Encrypt_Button_MouseClick(object sender, MouseEventArgs e)
+        private void Encrypt_Button_MouseClick(object sender, MouseEventArgs e)//Function used for encrypting the file
         {
             string inName = FilenameBox.Text;
             string outName = inName + ".des";
             
             FileStream fin;
             FileStream fout;
-            try
-            {
-                fin = new FileStream(inName, FileMode.Open, FileAccess.Read);
-                fout = new FileStream(outName, FileMode.OpenOrCreate, FileAccess.Write);
-            }
-            catch
-            {
-                MessageBox.Show("Could not open source or destination File.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
             if (File.Exists(outName))
             {
                 DialogResult dialog = MessageBox.Show("Output File Exists. Overwrite?", "File Exists", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -53,10 +43,21 @@ namespace Lab7
                 }
 
             }
+            try
+            {
+                fin = new FileStream(inName, FileMode.Open, FileAccess.Read);
+                fout = new FileStream(outName, FileMode.OpenOrCreate, FileAccess.Write);
+            }
+            catch
+            {
+                MessageBox.Show("Could not open source or destination File.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+           
             fout.SetLength(0);
-            byte[] bin = new byte[100]; //This is intermediate storage for the encryption.
-            long rdlen = 0;              //This is the total number of bytes written.
-            long totlen = fin.Length;    //This is the total length of the input file.
+            byte[] bin = new byte[100]; 
+            long rdlen = 0;              
+            long totlen = fin.Length;   
             int len;
             string key = KeyBox.Text;
             if (key.Length == 0)
@@ -64,40 +65,15 @@ namespace Lab7
                 MessageBox.Show("Please Enter a Key.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            // byte[] mykey = new byte[8] { 0X30, 0X30, 0X30, 0X30, 0X30, 0X30, 0X30, 0X30};
             byte[] mykey = new byte[8];
-            for (int i = 0; i < 8; i++)
-            {
-                Console.WriteLine(Convert.ToChar(mykey[i]));
-            }
             DES des = new DESCryptoServiceProvider();
-            if (key.Length > 8)
-            {
-                string firsteight = key.Substring(0, 8);
-                byte[] totalstring = Encoding.ASCII.GetBytes(key);
-                mykey = Encoding.ASCII.GetBytes(firsteight);
-                for (int i = 0; i < key.Length - 8; i++)
-                {
-                    mykey[i] = Convert.ToByte(mykey[i] + totalstring[i + 8]); 
-                }
-            }
-            else//This needs to be figured out for keys that are less than 8 characters
-            {
-     
-               
                 char[] tempkey = key.ToCharArray();
                 byte b;
-                for (int i = 0; i < tempkey.Length; i++)
-                {
-                    b = (byte)tempkey[i];
-                    mykey[i % (mykey.Length)] += (byte)b;
-                }
-                for (int i = 0; i < 8; i++)
-                {
-                    Console.WriteLine(Convert.ToChar(mykey[i]));
-                }
+            for (int i = 0; i < tempkey.Length; i++)
+            {
+                b = (byte)tempkey[i];
+                mykey[i % (mykey.Length)] += (byte)b;
             }
-
             CryptoStream encStream = new CryptoStream(fout, des.CreateEncryptor(mykey, mykey), CryptoStreamMode.Write);
             while (rdlen < totlen)
             {
@@ -110,7 +86,7 @@ namespace Lab7
             fin.Close();
         }
 
-        private void Decrypt_Button_MouseClick(object sender, MouseEventArgs e)
+        private void Decrypt_Button_MouseClick(object sender, MouseEventArgs e)//Function used for decrypting the file
         {
             string inName = FilenameBox.Text;
             string outName = inName.Remove(inName.Length - 4);
@@ -138,28 +114,13 @@ namespace Lab7
             FileStream fin = new FileStream(inName, FileMode.Open, FileAccess.Read);
             FileStream fout = new FileStream(outName, FileMode.OpenOrCreate, FileAccess.Write);
             fout.SetLength(0);
-            byte[] bin = new byte[100]; //This is intermediate storage for the encryption.
-            long rdlen = 0;              //This is the total number of bytes written.
-            long totlen = fin.Length;    //This is the total length of the input file.
+            byte[] bin = new byte[100]; 
+            long rdlen = 0;              
+            long totlen = fin.Length;    
             int len;
             string key = KeyBox.Text;
-            //byte[] mykey = new byte[8] { 0X30, 0X30, 0X30, 0X30, 0X30, 0X30, 0X30, 0X30 };
             byte[] mykey = new byte[8];
             DES des = new DESCryptoServiceProvider();
-            if (key.Length > 8)
-            {
-                string firsteight = key.Substring(0, 8);
-                byte[] totalstring = Encoding.ASCII.GetBytes(key);
-                mykey = Encoding.ASCII.GetBytes(firsteight);
-                for (int i = 0; i < key.Length - 8; i++)
-                {
-
-
-                    mykey[i] = Convert.ToByte(mykey[i] + totalstring[i + 8]);
-                }
-            }
-            else//This needs to be figured out for keys that are less than 8 characters
-            {
                 char[] tempkey = key.ToCharArray();
                 byte b;
                 for (int i = 0; i < tempkey.Length; i++)
@@ -167,7 +128,7 @@ namespace Lab7
                     b = (byte)tempkey[i];
                     mykey[i % (mykey.Length)] += (byte)b;
                 }
-            }
+           
 
             CryptoStream encStream = new CryptoStream(fout, des.CreateDecryptor(mykey, mykey), CryptoStreamMode.Write);
             while (rdlen < totlen)
